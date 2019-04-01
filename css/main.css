@@ -1,0 +1,12 @@
+#canvas {
+    border: 2px solid black;
+    display: block;
+    margin: auto;
+}
+
+h1 {
+    font-family: 'Arbutus', cursive;
+    text-align: center;
+    font-size: 80px;
+    margin: 0;
+}
