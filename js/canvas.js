@@ -64,6 +64,9 @@ const radius =  12;
 let vx = 10;
 let vy = 20;
 
+//Paddle
+let paddleX = 475;
+
 const moveBall = () => {
     requestAnimationFrame(moveBall);
     c.clearRect(0, 0, canvas.width, canvas.height);
@@ -73,7 +76,7 @@ const moveBall = () => {
     c.fillStyle = '#FF0000';
     c.stroke();
 
-    c.fillRect(475, 575, 150, 15);
+    c.fillRect(paddleX, 575, 150, 15);
 
     circleX += vx;
     circleY += vy;
@@ -118,9 +121,18 @@ const moveBall = () => {
 moveBall();
 
 document.body.addEventListener("keydown", e => {
-    if(e.keyCode == "37") paddleX -= 10;
-    if(e.keyCode == "39") paddleX += 10;
+    if([37, 39].includes(e.keyCode)) {
+        e.preventDefault();
+    }
+    switch (e.keyCode) {
+        case 37:
+            paddleX -= 20;
+            break;
+        case 39:
+            paddleX += 20;
+    }
 });
+
 
 
 
