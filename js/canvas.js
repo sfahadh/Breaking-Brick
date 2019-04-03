@@ -3,10 +3,6 @@ const c = canvas.getContext("2d");
 // canvas.height = window.innerHeight;
 // canvas.width = window.innerWidth;
 
-// let vx = 5;
-let vy = -5;
-let x = canvas.width / 2;
-let y = canvas.height - 25;
 //CLASSES
 class Ball {
     constructor(circleX, circleY, radius) {
@@ -52,13 +48,20 @@ class Bricks {
         }
     }
 }
+
+let vx = 5;
+let vy = -5;
 const brick = new Bricks(70, 80, 100, 25);
+const brickArray = [];
+const brickColumn = 6;
+const brickRow = 4
 
 const multipleBrick = () => {
-  for(let i = 0; i < 4; i++) {
-      for(let j = 0; j < 6; j++) {
+  for(let i = 0; i < brickColumn.length; i++) {
+      brickArray.push(new Bricks())
+    //   for(let j = 0; j < 6; j++) {
 
-      }
+    //   }
   }
 }
 multipleBrick();
@@ -91,7 +94,7 @@ const moveBall = () => {
     // c.fillRect(750, 80, 100, 25);
     // c.fillRect(920, 80, 100, 25);
     
-    // ball.x += vx; 
+    ball.x += vx; 
     ball.y += vy;
 
     //ball bounces around canvas
@@ -100,14 +103,14 @@ const moveBall = () => {
     } 
     if(ball.y + ball.r > canvas.height || ball.y - ball.r < 0) {
         vy = -vy;
-    }
-    if(ball.x + ball.r > paddle.x && ball.x - ball.r < paddle.x +   paddle.w) {
+    } else if(ball.x + ball.r > paddle.x && ball.x - ball.r < paddle.x +   paddle.w) {
         if(ball.y + ball.r > paddle.y) {
             vy = -vy;
-            ball.y = paddle.y - ball.r;
         } 
+    } 
+    if(ball.y > canvas.height - ball.r) {
+        clearInterval(end);
     }
-
     // if(distanceStart < 30 || distanceEnd < 30) {
     //     console.log(distanceStart);
     //     console.log(distanceEnd);
@@ -122,11 +125,11 @@ document.body.addEventListener("keydown", e => {
     }
     switch (e.keyCode) {
         case 37:
-            paddle.x -= 40;
+            paddle.x -= 50;
             if(paddle.x < -5) paddle.x = -5;
             break;
         case 39:
-            paddle.x += 40;
+            paddle.x += 50;
             if(paddle.x > 955) paddle.x = 955;
             break;
     }
