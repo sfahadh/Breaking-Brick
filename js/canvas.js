@@ -5,6 +5,7 @@ const c = canvas.getContext("2d");
 
 // let vx = 5;
 let vy = -5;
+let x = canvas.width / 2;
 let y = canvas.height - 25;
 //CLASSES
 class Ball {
@@ -38,16 +39,30 @@ class Paddle {
 }
 const paddle = new Paddle(475, 575, 150, 15);
 
-//Ask about inheritance
-// class Bricks extends Paddle {
-//     constructor() {
-//         super();
-//         this.createBricks = () => {
-//             c.fillRect(this.x, this.y, this.w, this.h)
-//         }
-//     }
-// }
-// const brick = new Bricks(240, 80, paddle.w, paddle.h);
+// Ask about inheritance
+class Bricks {
+    constructor(locationX, locationY, width, height) {
+        this.x = locationX;
+        this.y = locationY;
+        this.w = width;
+        this.h = height;
+
+        this.createBricks = () => {
+            c.fillRect(this.x, this.y, this.w, this.h);
+        }
+    }
+}
+const brick = new Bricks(70, 80, 100, 25);
+
+const multipleBrick = () => {
+  for(let i = 0; i < 4; i++) {
+      for(let j = 0; j < 6; j++) {
+
+      }
+  }
+}
+multipleBrick();
+
 
 // let paddleBallDistance = (px, bx, py, by) => {
 //     return Math.sqrt(Math.pow(px - bx, 2) + Math.pow(py - by, 2));
@@ -65,16 +80,16 @@ const moveBall = () => {
     c.clearRect(0, 0, canvas.width, canvas.height);
     ball.createBall();
     paddle.createPaddle();
-    // brick.createBricks();
+    brick.createBricks();
     // let distanceStart = paddleBallStart(paddle.x, ball.x, paddle.y, ball.y);
     // let distanceEnd = paddleBallEnd(paddle.x, ball.x, paddle.y, ball.y);
 
-    c.fillRect(70, 80, 100, 25);
-    c.fillRect(240, 80, 100, 25);
-    c.fillRect(490, 80, 100, 25);
+    // c.fillRect(70, 80, 100, 25);
+    // c.fillRect(240, 80, 100, 25);
+    // c.fillRect(490, 80, 100, 25);
     // c.fillRect(580, 80, 100, 25);
-    c.fillRect(750, 80, 100, 25);
-    c.fillRect(920, 80, 100, 25);
+    // c.fillRect(750, 80, 100, 25);
+    // c.fillRect(920, 80, 100, 25);
     
     // ball.x += vx; 
     ball.y += vy;
@@ -83,16 +98,14 @@ const moveBall = () => {
     if(ball.x + ball.r > canvas.width || ball.x - ball.r < 0) {
         vx = -vx; 
     } 
-    if(ball.y < ball.r) {
+    if(ball.y + ball.r > canvas.height || ball.y - ball.r < 0) {
         vy = -vy;
-    } else if(ball.y + ball.r > canvas.height) {
-        console.log(ball.y + ball.r);
-        console.log(canvas.height);
-        if(ball.x > paddle.x && ball.x < paddle.x + paddle.w) {
-            vy =-vy;
-        } else {
-            clearInterval(end);
-        }
+    }
+    if(ball.x + ball.r > paddle.x && ball.x - ball.r < paddle.x +   paddle.w) {
+        if(ball.y + ball.r > paddle.y) {
+            vy = -vy;
+            ball.y = paddle.y - ball.r;
+        } 
     }
 
     // if(distanceStart < 30 || distanceEnd < 30) {
