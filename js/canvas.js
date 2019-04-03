@@ -20,7 +20,6 @@ class Ball {
     }
 }
 const ball = new Ball(canvas.width / 2, 563, 12);
-
 class Paddle {
     constructor(locationX, locationY, width, height) {
         this.x = locationX;
@@ -35,67 +34,45 @@ class Paddle {
 }
 const paddle = new Paddle(475, 575, 150, 15);
 
-// Ask about inheritance
-class Bricks {
+class Bricks extends Paddle {
     constructor(locationX, locationY, width, height) {
-        this.x = locationX;
-        this.y = locationY;
-        this.w = width;
-        this.h = height;
+        super(locationX, locationY, width, height);
 
         this.createBricks = () => {
-            c.fillRect(this.x, this.y, this.w, this.h);
+            for(let i = 0; i < 6; i++) {
+                locationX = 70 + (170 * i);
+                c.fillRect(locationX, 80, 100, 25);
+                for(let j = 0; j < 4; j++) {
+                    locationY = 80 + (60 * j);
+                    c.fillRect(locationX, locationY, 100, 25);
+                }
+            }
         }
     }
 }
+let brick = new Bricks(this.locationX, this.locationY, 100, 25);
+
+// let brickCollision = () => {
+//     for(let i = 0; i < 6; i++) {
+//         for(let j = 0; j < 4; j++) {
+            
+//         }
+//     }
+// }
 
 let vx = 5;
 let vy = -5;
-const brick = new Bricks(70, 80, 100, 25);
-const brickArray = [];
-const brickColumn = 6;
-const brickRow = 4
-
-const multipleBrick = () => {
-  for(let i = 0; i < brickColumn.length; i++) {
-      brickArray.push(new Bricks())
-    //   for(let j = 0; j < 6; j++) {
-
-    //   }
-  }
-}
-multipleBrick();
-
-
-// let paddleBallDistance = (px, bx, py, by) => {
-//     return Math.sqrt(Math.pow(px - bx, 2) + Math.pow(py - by, 2));
-// }
-
-// let paddleBallStart = (pxs, bxs, pys, bys) => {
-//     return Math.sqrt(Math.pow(pxs - bxs, 2) + Math.pow(pys - bys, 2));
-// }
-// let paddleBallEnd = (pxe, bxe, pye, bye) => {
-//     return Math.sqrt(Math.pow((pxe + 145) - bxe, 2) + Math.pow(pye - bye, 2));
-// }
 
 const moveBall = () => {
-    // requestAnimationFrame(moveBall);
     c.clearRect(0, 0, canvas.width, canvas.height);
     ball.createBall();
     paddle.createPaddle();
-    brick.createBricks();
-    // let distanceStart = paddleBallStart(paddle.x, ball.x, paddle.y, ball.y);
-    // let distanceEnd = paddleBallEnd(paddle.x, ball.x, paddle.y, ball.y);
-
-    // c.fillRect(70, 80, 100, 25);
-    // c.fillRect(240, 80, 100, 25);
-    // c.fillRect(490, 80, 100, 25);
-    // c.fillRect(580, 80, 100, 25);
-    // c.fillRect(750, 80, 100, 25);
-    // c.fillRect(920, 80, 100, 25);
+    brick.createBricks()
+    // brickCollision();
+    // console.log(brickObj);
     
     ball.x += vx; 
-    ball.y += vy;
+    ball.y += vy;7
 
     //ball bounces around canvas
     if(ball.x + ball.r > canvas.width || ball.x - ball.r < 0) {
@@ -103,7 +80,7 @@ const moveBall = () => {
     } 
     if(ball.y + ball.r > canvas.height || ball.y - ball.r < 0) {
         vy = -vy;
-    } else if(ball.x + ball.r > paddle.x && ball.x - ball.r < paddle.x +   paddle.w) {
+    } else if(ball.x + ball.r > paddle.x && ball.x < paddle.x +   paddle.w) {
         if(ball.y + ball.r > paddle.y) {
             vy = -vy;
         } 
@@ -111,11 +88,8 @@ const moveBall = () => {
     if(ball.y > canvas.height - ball.r) {
         clearInterval(end);
     }
-    // if(distanceStart < 30 || distanceEnd < 30) {
-    //     console.log(distanceStart);
-    //     console.log(distanceEnd);
-    //     vy = -vy;
-    // }
+    
+
 }
 const end = setInterval(moveBall, 10);
 
