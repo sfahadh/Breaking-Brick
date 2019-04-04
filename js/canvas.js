@@ -1,8 +1,8 @@
 const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
 
-let vx = 5;
-let vy = -5;
+let vx = 3;
+let vy = -3;
 //CLASSES
 class Ball {
     constructor(circleX, circleY, radius) {
@@ -51,10 +51,12 @@ class Bricks extends Paddle {
 
         this.createBricks = () => {
             for(let i = 0; i < 6; i++) {
-                for(let j = 0; j < 4; j++) {
-                    bricks[i][j].x = 70 + (170 * i);
-                    bricks[i][j].y = 80 + (60 * j);
-                    c.fillRect(bricks[i][j].x, bricks[i][j].y, 100, 25);
+                for(let j = 0; j < 3; j++) {
+                    if(bricks[i][j].health === 1) {
+                        bricks[i][j].x = 70 + (170 * i);
+                        bricks[i][j].y = 80 + (60 * j);
+                        c.fillRect(bricks[i][j].x, bricks[i][j].y, 100, 25);
+                    }
                 }
             }
         }
@@ -67,15 +69,13 @@ let brickCollision = () => {
     for(let i = 0; i < 6; i++) {
         for(let j = 0; j< 4; j++) {
             let brick = bricks[i][j]
-            console.log(brick);
-            // if(ball.x + ball.r > brick.x && 
-            //     ball.x < brick.x - ball.r) {
-            //     vx = -vx;
-            // }
-            // if(ball.y + ball.r > bricks.y && 
-            //     ball.y < brick.y - ball.r) {
-            //     vy = -vy;
-            // }
+            if(ball.x > brick.x && 
+                ball.x < brick.x + 100 && 
+                ball.y > brick.y && 
+                ball.y < brick.y + 25) {
+                vy = -vy;
+                brick.health = 0;
+            }
         }
     }
 }
@@ -107,7 +107,7 @@ const moveBall = () => {
     ball.x += vx; 
     ball.y += vy;
 }
-const end = setInterval(moveBall, 10);
+const end = setInterval(moveBall, 5);
 
 document.body.addEventListener("keydown", e => {
     if([37, 39].includes(e.keyCode)) {
