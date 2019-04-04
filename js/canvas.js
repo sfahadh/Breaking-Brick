@@ -1,8 +1,8 @@
 const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
 
-let vx = 3;
-let vy = -3;
+let vx = 5;
+let vy = -5;
 //CLASSES
 class Ball {
     constructor(circleX, circleY, radius) {
@@ -45,11 +45,11 @@ for(let i = 0; i < 6; i++) {
         }
     }
 }
-class Bricks extends Paddle {
-    constructor(x, y, w, h) {
-        super(x, y, w, h);
+// class Bricks extends Paddle {
+//     constructor(x, y, w, h) {
+//         super(x, y, w, h);
 
-        this.createBricks = () => {
+        const createBricks = () => {
             for(let i = 0; i < 6; i++) {
                 for(let j = 0; j < 3; j++) {
                     if(bricks[i][j].health === 1) {
@@ -60,21 +60,23 @@ class Bricks extends Paddle {
                 }
             }
         }
-    }
-}
-let brickFill = new Bricks(this.x, this.y, 100, 25);
+//     }
+// }
+// let brickFill = new Bricks(this.x, this.y, 100, 25);
 
 //Collision Theory
 let brickCollision = () => {
     for(let i = 0; i < 6; i++) {
-        for(let j = 0; j< 4; j++) {
+        for(let j = 0; j < 4; j++) {
             let brick = bricks[i][j]
-            if(ball.x > brick.x && 
-                ball.x < brick.x + 100 && 
-                ball.y > brick.y && 
-                ball.y < brick.y + 25) {
-                vy = -vy;
-                brick.health = 0;
+            if(brick.health === 1) {
+                if(ball.x + ball.r >= brick.x && 
+                    ball.x - ball.r <= brick.x + 100 && 
+                    ball.y + ball.r >= brick.y && 
+                    ball.y - ball.r <= brick.y + 25) {
+                    vy = -vy;
+                    brick.health = 0;
+                }
             }
         }
     }
@@ -101,13 +103,13 @@ const moveBall = () => {
     ball.createBall();
     paddle.createPaddle();
     paddleScreenCollision();
-    brickFill.createBricks();
+    createBricks();
     brickCollision();
     
     ball.x += vx; 
     ball.y += vy;
 }
-const end = setInterval(moveBall, 5);
+const end = setInterval(moveBall, 10);
 
 document.body.addEventListener("keydown", e => {
     if([37, 39].includes(e.keyCode)) {
@@ -115,11 +117,11 @@ document.body.addEventListener("keydown", e => {
     }
     switch (e.keyCode) {
         case 37:
-            paddle.x -= 50;
+            paddle.x -= 110;
             if(paddle.x < -5) paddle.x = -5;
             break;
         case 39:
-            paddle.x += 50;
+            paddle.x += 110;
             if(paddle.x > 955) paddle.x = 955;
             break;
     }
