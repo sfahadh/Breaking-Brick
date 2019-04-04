@@ -1,8 +1,8 @@
 const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
-// canvas.height = window.innerHeight;
-// canvas.width = window.innerWidth;
 
+let vx = 5;
+let vy = -5;
 //CLASSES
 class Ball {
     constructor(circleX, circleY, radius) {
@@ -34,47 +34,53 @@ class Paddle {
 }
 const paddle = new Paddle(475, 575, 150, 15);
 
+let bricks = [];
+for(let i = 0; i < 6; i++) {
+    bricks[i] = []
+    for(let j = 0; j < 4; j++) {
+        bricks[i][j] = {
+            x: 0, 
+            y: 0,
+            health: 1
+        }
+    }
+}
 class Bricks extends Paddle {
-    constructor(locationX, locationY, width, height) {
-        super(locationX, locationY, width, height);
+    constructor(x, y, w, h) {
+        super(x, y, w, h);
 
         this.createBricks = () => {
             for(let i = 0; i < 6; i++) {
-                locationX = 70 + (170 * i);
-                c.fillRect(locationX, 80, 100, 25);
                 for(let j = 0; j < 4; j++) {
-                    locationY = 80 + (60 * j);
-                    c.fillRect(locationX, locationY, 100, 25);
+                    bricks[i][j].x = 70 + (170 * i);
+                    bricks[i][j].y = 80 + (60 * j);
+                    c.fillRect(bricks[i][j].x, bricks[i][j].y, 100, 25);
                 }
             }
         }
     }
 }
-let brick = new Bricks(this.locationX, this.locationY, 100, 25);
+let brickFill = new Bricks(this.x, this.y, 100, 25);
 
-// let brickCollision = () => {
-//     for(let i = 0; i < 6; i++) {
-//         for(let j = 0; j < 4; j++) {
-            
-//         }
-//     }
-// }
+//Collision Theory
+let brickCollision = () => {
+    for(let i = 0; i < 6; i++) {
+        for(let j = 0; j< 4; j++) {
+            let brick = bricks[i][j]
+            console.log(brick);
+            // if(ball.x + ball.r > brick.x && 
+            //     ball.x < brick.x - ball.r) {
+            //     vx = -vx;
+            // }
+            // if(ball.y + ball.r > bricks.y && 
+            //     ball.y < brick.y - ball.r) {
+            //     vy = -vy;
+            // }
+        }
+    }
+}
 
-let vx = 5;
-let vy = -5;
-
-const moveBall = () => {
-    c.clearRect(0, 0, canvas.width, canvas.height);
-    ball.createBall();
-    paddle.createPaddle();
-    brick.createBricks()
-    // brickCollision();
-    // console.log(brickObj);
-    
-    ball.x += vx; 
-    ball.y += vy;7
-
-    //ball bounces around canvas
+const paddleScreenCollision = () => {
     if(ball.x + ball.r > canvas.width || ball.x - ball.r < 0) {
         vx = -vx; 
     } 
@@ -88,8 +94,18 @@ const moveBall = () => {
     if(ball.y > canvas.height - ball.r) {
         clearInterval(end);
     }
-    
+}
 
+const moveBall = () => {
+    c.clearRect(0, 0, canvas.width, canvas.height);
+    ball.createBall();
+    paddle.createPaddle();
+    paddleScreenCollision();
+    brickFill.createBricks();
+    brickCollision();
+    
+    ball.x += vx; 
+    ball.y += vy;
 }
 const end = setInterval(moveBall, 10);
 
@@ -108,38 +124,3 @@ document.body.addEventListener("keydown", e => {
             break;
     }
 });
-
-
-
- // c.fillRect(70, 80, 100, 25);
-    // c.fillRect(240, 80, 100, 25);
-    // c.fillRect(410, 80, 100, 25);
-    // c.fillRect(580, 80, 100, 25);
-    // c.fillRect(750, 80, 100, 25);
-    // c.fillRect(920, 80, 100, 25);
-
-    // //Row 2 of bricks
-    // c.fillRect(70, 140, 100, 25);
-    // c.fillRect(240, 140, 100, 25);
-    // c.fillRect(410, 140, 100, 25);
-    // c.fillRect(580, 140, 100, 25);
-    // c.fillRect(750, 140, 100, 25);
-    // c.fillRect(920, 140, 100, 25);
-
-    // //Row 3 of bricks
-    // c.fillRect(70, 200, 100, 25);
-    // c.fillRect(240, 200, 100, 25);
-    // c.fillRect(410, 200, 100, 25);
-    // c.fillRect(580, 200, 100, 25);
-    // c.fillRect(750, 200, 100, 25);
-    // c.fillRect(920, 200, 100, 25);
-
-    // //Row 4 of bricks
-    // c.fillRect(70, 260, 100, 25);
-    // c.fillRect(240, 260, 100, 25);
-    // c.fillRect(410, 260, 100, 25);
-    // c.fillRect(580, 260, 100, 25);
-    // c.fillRect(750, 260, 100, 25);
-    // c.fillRect(920, 260, 100, 25);
-
-
