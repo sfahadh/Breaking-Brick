@@ -1,11 +1,11 @@
 const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
 
+let header = document.querySelector("h1");
 let vx = 4;
 let vy = -4;
 let score = 0;
 let lives = 5;
-let initiateGame = true;
 let end;
 let marioBricks = new Image();
 marioBricks.src = "images/mario-bricks.png";
@@ -35,7 +35,7 @@ class Paddle {
         this.h = height;
 
         this.createPaddle = () => {
-            c.fillStyle = "#60EF5B";
+            c.fillStyle = "black";
             c.fillRect(this.x, this.y, this.w, this.h);
         }
     }
@@ -76,10 +76,14 @@ let brickCollision = () => {
                     ball.y + ball.r >= brick.y && 
                     ball.y - ball.r <= brick.y + 25) {
                     vy = -vy;
+                    vx = vx;
                     brick.health = 0;
                     score += 100;
                     if(score === 2400) {
-                        alert("YOU WON");
+                        header.innerHTML = "CONGRATULATIONS!";
+                        header.style.color = "rgb(14, 21, 131)";
+                        header.style.animation = "flash 1.6s infinite";
+                        clearInterval(end);
                     }
                 }
             }
@@ -93,14 +97,17 @@ const paddleScreenCollision = () => {
     } 
     if(ball.y + ball.r > canvas.height || ball.y - ball.r < 0) {
         vy = -vy;
-    } else if(ball.x + ball.r > paddle.x && ball.x < paddle.x +   paddle.w) {
-        if(ball.y + ball.r > paddle.y) {
+    } else if(ball.x + ball.r > paddle.x && ball.x < paddle.x + paddle.w) {
+        if(ball.y + ball.r > paddle.y && ball.y - ball.r < paddle.y + paddle.h) {
             vy = -vy;
-        } 
+        }
     } 
     if(ball.y > canvas.height - ball.r) {
         lives--;
         if(lives === 0) {
+            header.innerHTML = "FAILURE!";
+            header.style.color = "rgb(172, 0, 9)";
+            header.style.animation = "flash 1.6s infinite";
             clearInterval(end);
         } else {
             ball.x = canvas.width / 2;
@@ -122,17 +129,6 @@ const livesBoard = () => {
     c.fillText(`Lives: ${lives}`, 945, 35);
 }
 
-const initiate = () => {    
-    if(initiateGame) {
-        ball.x += vx; 
-        ball.y += vy;
-    } else {
-        ball.x += 0; 
-        ball.y += 0;    
-    }
-}
-
-
 const startGame = () => {
     c.clearRect(0, 0, canvas.width, canvas.height);
     ball.createBall();
@@ -142,7 +138,9 @@ const startGame = () => {
     brickCollision();
     scoreBoard();
     livesBoard();
-    initiate();
+
+    ball.x += vx; 
+    ball.y += vy;
 }
 window.onload = () => {
     let game = document.getElementById("game");
@@ -152,7 +150,6 @@ window.onload = () => {
         end = setInterval(startGame, 10);
     });
 }
-
 
 document.addEventListener("keydown", e => {
     if([37, 39].includes(e.keyCode)) {
@@ -170,8 +167,4 @@ document.addEventListener("keydown", e => {
     }
 });
 
-// document.addEventListener("mouseover", mousePaddle, false);
-// const mousePaddle = e => {
-//     let positionX = mouseX -  
-// }
 
