@@ -2,8 +2,8 @@ const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
 
 let header = document.querySelector("h1");
-let vx = 4;
-let vy = -4;
+let vx = 2;
+let vy = -2;
 let score = 0;
 let lives = 5;
 let end;
@@ -80,9 +80,10 @@ let brickCollision = () => {
                     brick.health = 0;
                     score += 100;
                     if(score === 2400) {
-                        header.innerHTML = "CONGRATULATIONS!";
+                        header.innerHTML = "SHOULD'VE MADE THIS HARDER!";
+                        header.style.fontSize = "3.5em";
                         header.style.color = "rgb(14, 21, 131)";
-                        header.style.animation = "flash 1.6s infinite";
+                        header.style.animation = "flash 2.5s infinite";
                         clearInterval(end);
                     }
                 }
@@ -97,17 +98,17 @@ const paddleScreenCollision = () => {
     } 
     if(ball.y + ball.r > canvas.height || ball.y - ball.r < 0) {
         vy = -vy;
-    } else if(ball.x + ball.r > paddle.x && ball.x < paddle.x + paddle.w) {
-        if(ball.y + ball.r > paddle.y && ball.y - ball.r < paddle.y + paddle.h) {
-            vy = -vy;
-        }
-    } 
+    } else if(ball.x + ball.r > paddle.x && ball.x - ball.r < paddle.x + paddle.w && 
+        ball.y + ball.r > paddle.y && ball.y - ball.r < paddle.y + paddle.h + 10) {
+        vy = -vy;
+    }
     if(ball.y > canvas.height - ball.r) {
         lives--;
         if(lives === 0) {
-            header.innerHTML = "FAILURE!";
+            header.innerHTML = "YOU TRASH!";
+            header.style.fontSize = "3.5em";
             header.style.color = "rgb(172, 0, 9)";
-            header.style.animation = "flash 1.6s infinite";
+            header.style.animation = "flash 2.5s infinite";
             clearInterval(end);
         } else {
             ball.x = canvas.width / 2;
@@ -147,7 +148,7 @@ window.onload = () => {
     let modal = document.getElementById("modal");
     game.addEventListener("click", start = () => {
         modal.style.display = "none";
-        end = setInterval(startGame, 10);
+        end = setInterval(startGame, 1);
     });
 }
 
